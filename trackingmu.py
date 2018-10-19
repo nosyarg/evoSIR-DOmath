@@ -6,13 +6,16 @@ def inlist(a, x):
     if i != len(a) and a[i] == x:
         return 1
     return 0
-n = 1000
+n = 100000
 filepath = 'data/realexptimetrackinfected.csv'
 r = 4
 mu = 5
 p = mu/n
 lambd = 2
 rho = 3
+niv = []
+nivcount = 1
+newmu = mu
 while (r/n < .2):
         counter = 0
         infected = []
@@ -21,7 +24,7 @@ while (r/n < .2):
         si = []
         G = nx.fast_gnp_random_graph(n,p)#set up the er graph and infect patient 0
         writefile = open(filepath,'w')
-        writefile.write('n,p,lambda,rho,s,i,r,t,mu\n')
+        writefile.write('n,p,lambda,rho,s,i,r,t,mu,newmu\n')
         writefile.close()
         t = 0
         r = 0
@@ -43,6 +46,12 @@ while (r/n < .2):
         """
         si = sorted(list(G.edges(0)))
         while(len(infected) > 0): #do the modified contact process algorithm for disease spread
+                if(nivcount %100 == 0):
+                        newmu = sum(niv)/len(niv)
+                        print(sum(niv))
+                        nivcount = 1
+                        niv = []
+
                 if(counter % 10 == 0):
                         mu = 0
                         #print(len(susceptible))
@@ -59,7 +68,7 @@ while (r/n < .2):
                         i -= 1
                         r += 1
                         writefile = open(filepath,'a')
-                        writefile.write(str(n) + ',' + str(p) + ',' + str(lambd) + ',' + str(rho) + ',' + str(s) + ',' + str(i) + ',' + str(r) + ',' + str(t) + ',' + str(mu) + '\n')
+                        writefile.write(str(n) + ',' + str(p) + ',' + str(lambd) + ',' + str(rho) + ',' + str(s) + ',' + str(i) + ',' + str(r) + ',' + str(t) + ',' + str(mu) + ',' + str(newmu) + '\n')
                         writefile.close()
                         G.nodes[todie]['state'] = 'r'
                         del infected[bisect_left(infected,todie)]
@@ -73,12 +82,14 @@ while (r/n < .2):
                         i += 1
                         s -= 1
                         writefile = open(filepath,'a')
-                        writefile.write(str(n) + ',' + str(p) + ',' + str(lambd) + ',' + str(rho) + ',' + str(s) + ',' + str(i) + ',' + str(r) + ',' + str(t) + ',' + str(mu) + '\n')
+                        writefile.write(str(n) + ',' + str(p) + ',' + str(lambd) + ',' + str(rho) + ',' + str(s) + ',' + str(i) + ',' + str(r) + ',' + str(t) + ',' + str(mu) + ',' + str(newmu) + '\n')
                         writefile.close()
                         cross = choice(si)
                         if(G.nodes[cross[0]]['state']=='s'):
                                 G.nodes[cross[0]]['state'] = 'i'
                                 insort(infected,cross[0])
+                                niv.append(G.degree(cross[0]))
+                                nivcount += 1
                                 #print("WILL DELETE:")
                                 #print(susceptible[bisect_left(susceptible,cross[0])])
                                 del susceptible[bisect_left(susceptible,cross[0])]
@@ -95,6 +106,8 @@ while (r/n < .2):
                         elif(G.nodes[cross[1]]['state']=='s'):
                                 G.nodes[cross[1]]['state'] = 'i'
                                 insort(infected,(cross[1]))
+                                niv.append(G.degree(cross[1]))
+                                nivcount += 1
                                 #print("WILL DELETE:")
                                 #print(susceptible[bisect_left(susceptible,cross[1])])
                                 del susceptible[bisect_left(susceptible,cross[1])]
@@ -111,7 +124,7 @@ while (r/n < .2):
                 else: #rewire edge event
                         t += 1/(i+(lambd+rho)*len(si))
                         writefile = open(filepath,'a')
-                        writefile.write(str(n) + ',' + str(p) + ',' + str(lambd) + ',' + str(rho) + ',' + str(s) + ',' + str(i) + ',' + str(r) + ',' + str(t) + ',' + str(mu) + '\n')
+                        writefile.write(str(n) + ',' + str(p) + ',' + str(lambd) + ',' + str(rho) + ',' + str(s) + ',' + str(i) + ',' + str(r) + ',' + str(t) + ',' + str(mu) + ',' + str(newmu) + '\n')
                         writefile.close()
                         rewire = choice(si)
                         del si[bisect_left(si,rewire)]

@@ -1,5 +1,5 @@
 rm(list = ls())
-setwd('/Users/grayson/dropbox/duke/summer2018')
+setwd('/Users/grayson/evosir')
 exptime <- read.csv('data/exptime.csv')
 lambdadata <- exptime[exptime$rho == 4,]
 lambdadata <- lambdadata[lambdadata$n == 100000,]
@@ -238,4 +238,9 @@ png(filename = 'plots/noodlerho.png')
 noodledata <- read.csv('data/evonoodle.csv')
 noodledata <- noodledata[noodledata$n == 1000,]
 plot(noodledata$rho,noodledata$diam)
+#NIV
+dev.off()
+png(filename = 'plots/newinfecteddeg.png')
+simulationdata <- read.csv('data/realexptimetrackinfected.csv')
+plot(simulationdata$t,simulationdata$newmu,type = 'l',xlim = c(0,6),ylim = c(0,10))
 dev.off()
