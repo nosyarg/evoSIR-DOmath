@@ -7,15 +7,15 @@ def inlist(a, x):
         return 1
     return 0
 n = 100000
-filepath = 'data/realexptimetrackinfected.csv'
+filepath = 'data/realexptimetrackinfectednorewire.csv'
 r = 4
 mu = 5
 p = mu/n
 lambd = 2
-rho = 3
+rho = 0
 niv = []
 nivcount = 1
-newmu = mu
+newmu = 0
 while (r/n < .2):
         counter = 0
         infected = []
