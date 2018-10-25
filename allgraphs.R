@@ -15,7 +15,7 @@ plot(lambdadata$lambda,1-lambdadata$S, xlab = expression(lambda), ylab = '',main
 lines(theory$lambda,theory$t,lty = 2)
 lines(lowerbound$lambda,1-lowerbound$z,lty = 3)
 #lines(ode$lambda,ode$R,col = 'green')
-#lines(newode$lambda,newode$R,col = 'purple')
+lines(newode$lambda,newode$R,col = 'purple')
 abline(v = 1.25)
 dev.off()
 #PROBABILITY OF EPIDEMIC GRAPH EXPONENTIAL TIME RHO = 4
@@ -161,9 +161,9 @@ normalizeddata <- data.frame(simulationdata$r/simulationdata$n,simulationdata$i/
 colnames(normalizeddata) = c('r','i','s','t')
 downsamplevector <- runif(nrow(normalizeddata)) < .001
 normalizeddata <- normalizeddata[downsamplevector,]
-#lo <- loess(r~t,data = normalizeddata,span = .001)
-#plot(normalizeddata$t,predict(lo),type = 'l')
-plot(normalizeddata$t,normalizeddata$s,type = 'l')
+lo <- loess(r~t,data = normalizeddata,span = .001)
+plot(normalizeddata$t,predict(lo,data = data.frame(1:100)/10),type = 'l')
+#plot(normalizeddata$t,normalizeddata$s,type = 'l')
 lines(simulationdata$t,simulationdata$i/simulationdata$n, lty = 3)
 #lo <- loess(i~t,data = normalizeddata,span = .001)
 #lines(normalizeddata$t,predict(lo),lty = 2)
