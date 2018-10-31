@@ -12,7 +12,7 @@ while(1):#main loop
         mu = 5
         p = mu/n
         rho = 4#round(100*random())/10#round(100*random())/10
-        lambd = round(100*random())/10
+        lambd = 1.1 + .3*random()
         infected = []#this will store all the infected vertices
         si = []#this will store all the si edges
         G = nx.fast_gnp_random_graph(n,p)#set up the er graph and infect patient 0
@@ -83,4 +83,4 @@ while(1):#main loop
         writefile = open('data/exptime.csv','a')#write the relevant data about the sim
         writefile.write(str(n) + ',' + str(p) + ',' + str(lambd) + ',' + str(rho) + ',' + str(survivors/n) + '\n')
         writefile.close()
-        print(survivors/n)
+        #print(survivors/n)

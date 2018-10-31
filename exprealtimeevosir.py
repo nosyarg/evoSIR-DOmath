@@ -6,13 +6,13 @@ def inlist(a, x):
     if i != len(a) and a[i] == x:
         return 1
     return 0
-n = 1000
-filepath = 'data/realexptimetrackinfected.csv'
 r = 4
+n = 10000
+filepath = 'data/critvalsim.csv'
 mu = 5
 p = mu/n
-lambd = 2
-rho = 3
+lambd = 1.25
+rho = 4
 while (r/n < .2):
         counter = 0
         infected = []

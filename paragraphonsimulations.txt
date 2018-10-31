@@ -1,0 +1,9 @@
+In order to simulate the evosir process in the exponential time case, we used an algorithm which
+represented infection, recovery, and rewire events as an exponential race, and handled time
+implicitly.
+In the constant time case, the infection and rewire events were
+represented as an exponential race, but a running tally of time was kept
+for the recovery events.
+The code was written in python using the networkx package for the graph
+generation and dynamics, and the graphs were generated in R using
+ggplot2.
