@@ -11,11 +11,12 @@ n = 10000
 survivors = n
 while(survivors/n > .2):
         survivors = n
-        writepath = 'data/realconsttime.csv'
+        writepath = 'data/consttimecritval.csv'
         writefile = open(writepath,'w')
-        writefile.write('n,p,lambda,rho,s,i,r,t\n')
+        writefile.write('n,p,lambda,rho,s,i,r,mu,t\n')
         writefile.close()
         mu = 5
+        susceptible = list(range(1,n))
         p = mu/n
         lambd = 1.0084#1#round(100*random())/10
         rho = 4#round(100*random())/10#4
@@ -29,10 +30,16 @@ while(survivors/n > .2):
         G.nodes[0]['state'] = 'i'
         infected = [(0,time+1)]
         si = sorted(list(G.edges(0)))
+        counter = 0
         while(len(si) > 0): 
+                counter += 1
+                if(counter % 10 == 0):
+                        mu = 0
+                        for sus in susceptible:
+                                mu += G.degree(sus)/len(susceptible)
                 numinfected = len(infected)
                 writefile = open(writepath,'a')
-                writefile.write(str(n) + ',' + str(p) + ',' + str(lambd) + ',' + str(rho) + ',' + str(survivors/n) + ',' + str(numinfected/n) + ',' + str((n-numinfected - survivors)/n) +',' + str(time)  + '\n')
+                writefile.write(str(n) + ',' + str(p) + ',' + str(lambd) + ',' + str(rho) + ',' + str(survivors/n) + ',' + str(numinfected/n) + ',' + str((n-numinfected - survivors)/n) +','+ str(mu) + ',' + str(time)  + '\n')
                 writefile.close()
                 timetoevent = np.random.exponential(1/(len(si)*(lambd+rho)))
                 if(timetoevent+time>infected[0][1]):
@@ -54,6 +61,7 @@ while(survivors/n > .2):
                         if(G.nodes[cross[0]]['state']=='s'):#the susceptible is first in the list
                                 G.nodes[cross[0]]['state'] = 'i'
                                 infected.append((cross[0],time+1))
+                                del susceptible[bisect_left(susceptible,cross[0])]
                                 for node in G.neighbors(cross[0]):#change si list
                                         if(G.nodes[node]['state']=='i'):
                                                 if(inlist(si,(cross[0],node))):
@@ -65,6 +73,7 @@ while(survivors/n > .2):
                         elif(G.nodes[cross[1]]['state']=='s'):#the susceptible is second in the list
                                 G.nodes[cross[1]]['state'] = 'i'
                                 infected.append((cross[1],time+1))
+                                del susceptible[bisect_left(susceptible,cross[1])]
                                 for node in G.neighbors(cross[1]):#change si list
                                         if(G.nodes[node]['state']=='i'):
                                                 if(inlist(si,(cross[1],node))):

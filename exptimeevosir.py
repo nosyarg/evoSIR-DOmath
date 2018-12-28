@@ -8,11 +8,11 @@ def inlist(a, x):#determines an element x is in a sorted array a
     return 0
 while(1):#main loop
         #the next few lines determine the parameters for the graph on each run
-        n = 100000
+        n = 10000
         mu = 5
         p = mu/n
-        rho = 4#round(100*random())/10#round(100*random())/10
-        lambd = 2*random()
+        rho = 10*random()#round(100*random())/10#round(100*random())/10
+        lambd = 20
         infected = []#this will store all the infected vertices
         si = []#this will store all the si edges
         G = nx.fast_gnp_random_graph(n,p)#set up the er graph and infect patient 0

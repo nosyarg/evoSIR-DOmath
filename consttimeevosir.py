@@ -11,7 +11,7 @@ while(1):
         n = 100000
         mu = 5
         p = mu/n
-        lambd = random()*1.0#1#round(100*random())/10
+        lambd = random*6.0#1#round(100*random())/10
         rho = 4#round(100*random())/10#4
         time = 0
         infected = []

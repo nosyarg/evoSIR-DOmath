@@ -8,11 +8,11 @@ def inlist(a, x):
     return 0
 r = 4
 n = 10000
-filepath = 'data/critvalsim.csv'
+filepath = 'data/norewiresim.csv'
 mu = 5
 p = mu/n
-lambd = 1.25
-rho = 4
+lambd = 2
+rho = 0
 while (r/n < .2):
         counter = 0
         infected = []
