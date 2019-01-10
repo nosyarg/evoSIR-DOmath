@@ -11,8 +11,8 @@ while(1):
         n = 100000
         mu = 5
         p = mu/n
-        lambd = random*6.0#1#round(100*random())/10
-        rho = 4#round(100*random())/10#4
+        lambd = 1#1#round(100*random())/10
+        rho = 3+random()#round(100*random())/10#4
         time = 0
         infected = []
         si = []
@@ -84,4 +84,4 @@ while(1):
         writefile = open('data/consttime.csv','a')
         writefile.write(str(n) + ',' + str(p) + ',' + str(lambd) + ',' + str(rho) + ',' + str(survivors/n) + '\n')
         writefile.close()
-        #print(survivors/n)
+        print(survivors/n)

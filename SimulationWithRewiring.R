@@ -13,6 +13,7 @@ realtimeode3rewire <- ggplot(theorydata, aes(t)) +
   theme(axis.text=element_text(size=20),
         axis.title=element_text(size=30)) +
   xlim(0,6) +
+  ylim(0,1) +
   labs(y = NULL)
 ggsave("paper_plots/exprwode.jpg", plot = realtimeode3rewire, device="jpg")#,path = "~/Desktop/evoSIR-DOmath/paper_plots")
 rm(list = ls())
@@ -29,6 +30,7 @@ realtimesimgraphrewire <- ggplot(simulationdata, aes(t)) +
   theme(axis.text=element_text(size=20),
         axis.title=element_text(size=20)) +
   xlim(0,6) +
+  ylim(0,1) +
   labs(y = NULL)
 ggsave("paper_plots/exprwsim.jpg", plot = realtimesimgraphrewire, device="jpg")#,path = "~/Desktop/evoSIR-DOmath/paper_plots")
 rm(list = ls())
@@ -45,6 +47,7 @@ realtimeode3rewire <- ggplot(simulationdata, aes(t)) +
   theme(axis.text=element_text(size=20),
         axis.title=element_text(size=30)) +
   xlim(0,30) +
+  ylim(0,1) +
   labs(y = NULL)
 ggsave("paper_plots/criticalepid.jpg", plot = realtimeode3rewire, device="jpg")#,path = "~/Desktop/evoSIR-DOmath/paper_plots")
 rm(list = ls())
@@ -61,6 +64,7 @@ realtimeode3rewire <- ggplot(simulationdata, aes(t)) +
   theme(axis.text=element_text(size=20),
         axis.title=element_text(size=30)) +
   xlim(0,20) +
+  ylim(0,1)+
   labs(y = NULL)
 ggsave("paper_plots/const_critval.jpg", plot = realtimeode3rewire, device="jpg")#,path = "~/Desktop/evoSIR-DOmath/paper_plots")
 rm(list = ls())
@@ -74,6 +78,7 @@ realtimeode3rewire <- ggplot(theorydata, aes(t)) +
   theme(axis.text=element_text(size=20),
         axis.title=element_text(size=30)) +
   xlim(0,8) +
+  ylim(0,1) +
   labs(y = NULL)
 ggsave("paper_plots/realtimeode3.jpg", plot = realtimeode3rewire, device="jpg")#,path = "~/Desktop/evoSIR-DOmath/paper_plots")
 rm(list = ls())
@@ -90,49 +95,68 @@ realtimesimgraphrewire <- ggplot(simulationdata, aes(t)) +
   theme(axis.text=element_text(size=20),
         axis.title=element_text(size=30)) +
   xlim(0,8) +
+  ylim(0,1) +
   labs(y = NULL)
 ggsave("paper_plots/realtimesimgraph.jpg", plot = realtimesimgraphrewire, device="jpg")#,path = "~/Desktop/evoSIR-DOmath/paper_plots")
 rm(list = ls())
 #epidemic size vs lambda constant time
-plot.new()
+#plot.new()
 simdata <- read.csv('data/consttime.csv')
 simdata <- simdata[simdata$rho == 4,]
 simdata <- simdata[simdata$n == 100000,]
 simdata <- simdata[(simdata$lambda < 1.4) & (simdata$lambda > .5),]
-ode <- read.csv('theory/constlambda1.csv')
-lowerbound <- read.csv('theory/constlambda1lower.csv')
+ode <- read.csv('theory/constrho4.csv')
+lowerbound <- read.csv('theory/constrho4lower.csv')
 consttimelambda <- ggplot() +
   geom_point(aes(simdata$lambda,1-simdata$S)) +
   geom_vline(xintercept = 1.0084) +
   labs(y = "Size of Epidemic\n", x = expression(lambda)) +
   title("Constant Time Recovery Size of Epidemic vs lambda") +
   geom_line(aes(lowerbound$lambda,1-lowerbound$z),linetype = "solid",size = 2) +
-  geom_line(aes(ode$lambda,ode$t), linetype = "dotted",size = 2) +
+  geom_line(aes(ode$lambda,ode$t), linetype = "dashed",size = 2) +
   xlim(.5,1.4) +
-  theme_bw()+
+  ylim(0,1) +
+  theme_bw() +
   theme(axis.text=element_text(size=20),
-        axis.title=element_text(size=30))
+        axis.title=element_text(size=20))
 ggsave("paper_plots/ctvarylambda.jpg", plot = consttimelambda, device="jpg")#,path = "~/Desktop/evoSIR-DOmath/paper_plots")
 rm(list = ls())
 #epidemic size vs rho constant time
 simdata <- read.csv('data/consttime.csv')
 simdata <- simdata[simdata$lambda == 1,]
-simdata <- simdata[simdata$n == 10000,]
+simdata <- simdata[simdata$n == 100000,]
 simdata <- simdata[simdata$rho < 6,]
 lowerbound <- read.csv('theory/constlambda1lower.csv')
 ode <- read.csv('theory/constlambda1.csv')
 consttimerho <- ggplot() +
   geom_point(aes(simdata$rho,1-simdata$S)) +
   geom_vline(xintercept = 4) +
-  labs(y = "Size of Epidemic", x = expression(rho)) +
+  labs(y = "Size of Epidemic\n", x = expression(rho)) +
   title("Exponential Time Recovery Size of Epidemic vs lambda") +
   geom_line(aes(lowerbound$rho,1-lowerbound$z),linetype = "solid",size = 2) +
   geom_line(aes(ode$rho,ode$t), linetype = "dashed",size = 2) +
   theme_bw()+
   theme(axis.text=element_text(size=20),
         axis.title=element_text(size=20)) +
-  xlim(0,6)
+  xlim(0,6) +
+  ylim(0,1)
 ggsave("paper_plots/ctvaryrho.jpg", plot = consttimerho, device="jpg")#,path = "~/Desktop/evoSIR-DOmath/paper_plots")
+rm(list = ls())
+#epidemic size vs rho constant time with large lambda
+simdata <- read.csv('data/consttime.csv')
+simdata <- simdata[simdata$lambda == 20,]
+simdata <- simdata[simdata$n == 100000,]
+simdata <- simdata[simdata$rho < 100,]
+consttimerho <- ggplot() +
+  geom_point(aes(simdata$rho,1-simdata$S)) +
+  labs(y = "Size of Epidemic", x = expression(rho)) +
+  title("Exponential Time Recovery Size of Epidemic vs lambda") +
+  theme_bw()+
+  theme(axis.text=element_text(size=20),
+        axis.title=element_text(size=20)) +
+  xlim(0,100) +
+  ylim(.99,1)
+ggsave("paper_plots/brittoncheck.jpg", plot = consttimerho, device="jpg")#,path = "~/Desktop/evoSIR-DOmath/paper_plots")
 rm(list = ls())
 #epidemic size vs lambda exponential time
 simdata <- read.csv('data/exptime.csv')
@@ -147,7 +171,7 @@ newode <- newode[newode$rho == 4,]
 exptimelambda <- ggplot() +
   geom_point(aes(simdata$lambda,1-simdata$S)) +
   geom_vline(xintercept = 1.25) +
-  labs(y = "Size of Epidemic", x = expression(lambda)) +
+  labs(y = "Size of Epidemic\n", x = expression(lambda)) +
   title("Exponential Time Recovery Size of Epidemic vs lambda") +
   geom_line(aes(lowerbound$lambda,1-lowerbound$z),linetype = "solid",size = 2) +
   geom_line(aes(ode$lambda,ode$t), linetype = "dotted",size = 2) +
@@ -155,7 +179,8 @@ exptimelambda <- ggplot() +
   theme_bw()+
   theme(axis.text=element_text(size=20),
         axis.title=element_text(size=20)) +
-  xlim(0,2)
+  xlim(0,2) +
+  ylim(0,1)
 ggsave("paper_plots/exp_rho4.jpg", plot = exptimelambda, device="jpg")#,path = "~/Desktop/evoSIR-DOmath/paper_plots")
 rm(list = ls())
 #epidemic size vs rho exponential time
@@ -165,17 +190,22 @@ simdata <- simdata[simdata$lambda == 1,]
 #simdata <- simdata[(simdata$rho > 2) & (simdata$rho < 6),]
 lowerbound <- read.csv('theory/explambda1genfunc.csv')
 ode <- read.csv('theory/explambda1size.csv')
+newode <- read.csv('theory/ode3withrewiring.csv')
+newode <- newode[newode$lambda == 1,]
 exptimelambda <- ggplot() +
   geom_point(aes(simdata$rho,1-simdata$S)) +
   #geom_vline(xintercept = 4) +
-  labs(y = "Size of Epidemic", x = expression(rho)) +
+  labs(y = "Size of Epidemic\n", x = expression(rho)) +
   #title("Exponential Time Recovery Size of Epidemic vs lambda") +
   geom_line(aes(lowerbound$rho,1-lowerbound$z),linetype = "solid",size = 2) +
   geom_line(aes(ode$rho,ode$t), linetype = "dotted",size = 2) +
+  geom_line(aes(newode$rho,newode$R), linetype = "dashed",size = 2) +
   theme_bw()+
   theme(axis.text=element_text(size=20),
         axis.title=element_text(size=20)) +
-  xlim(0,10)
+  geom_vline(xintercept = 3) +
+  xlim(0,5) + 
+  ylim(0,1)
 ggsave("paper_plots/etvaryrho.jpg", plot = exptimelambda, device="jpg")#,path = "~/Desktop/evoSIR-DOmath/paper_plots")
 rm(list = ls())
 #no rewire mu exptime
